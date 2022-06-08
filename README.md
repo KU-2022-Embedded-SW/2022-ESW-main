@@ -14,4 +14,5 @@
 3. 노이즈 제거 후 후보 contour 정리
 4. 알파벳 인식 모델 통과, Th=0.7보다 높으면 알파벳으로 처리
 * 학습 결과
+* 모델 링크 : [링크](https://drive.google.com/drive/folders/1ic6IRprpYnCIdwzm6b53zqGvKN6z0605?usp=sharing)
 ![train_res](https://github.com/KU-2022-Embedded-SW/2022-ESW-main/blob/main/AlphabetDetection/train_result.png)
