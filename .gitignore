@@ -4,3 +4,5 @@ AlphabetDetection/models/result_1.pt
 AlphabetDetection/models/result_2.pt
 AlphabetDetection/models/result_3.pt
 AlphabetDetection/models/result_4.pt
+*.pyc
+AlphabetDetection/model/
