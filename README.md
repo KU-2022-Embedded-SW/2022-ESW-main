@@ -20,3 +20,6 @@
 * 모델 적용 결과
 
 ![result_image_cnn](https://github.com/KU-2022-Embedded-SW/2022-ESW-main/blob/main/ReportImages/alphabet_detection_result_cnn_model.jpg)
+
+* 코드 개선 방안
+[네이버 D2 블로그 링크](https://d2.naver.com/helloworld/8344782)
