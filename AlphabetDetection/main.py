@@ -6,6 +6,10 @@ from PIL import Image
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torchvision.transforms as transforms
+from torchvision.transforms import ToTensor
+import string
+from consts import *
 
 
 cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -52,7 +56,7 @@ def draw_contour(img, target):
             x, y = 0, 0
         org=(x,y)
         font=cv2.FONT_HERSHEY_SIMPLEX
-        cv2.putText(img,str(label),org,font,1,color,1)
+        cv2.putText(img,string.ascii_uppercase[label],org,font,1,(255,255,255),3)
 
 
 def calc_points(contour):
@@ -79,23 +83,29 @@ def img_process(img):
     return img_erode
 
 def find_items(img, contours_im):
+    to_tensor = ToTensor()
     alphabets = []
     for contour in contours_im:
         x,y,w,h = cv2.boundingRect(contour)
+
+        if w < 30 or h < 30 :
+            continue
+        if h/w >= tolerance or w/h >= tolerance:
+            continue
+
+        cv2.rectangle(img, (x,y), (x+w, y+h), (0,0,255), 1)
+        # cv2.putText(img, '({},{})'.format(w, h),(x, y),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),1)
         
         pil_img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
         crop_img = pil_img.crop((x,y,x+w,y+h))
-        try:
-            crop_img.show()
-        except Exception as e:
-            print(e)
-        # data = np.array(crop_img.resize((32,32)))
-        # data = np.expand_dims(data, 0)
-        # data = torch.from_numpy(data)
-        # data = data.type(torch.FloatTensor)
-        # data = data / 255
-        # result = alphabet_detector(data)
-        # alphabets.append((contour, result))
+
+        data = to_tensor(crop_img.resize((32,32)))
+        result = alphabet_detector(data)
+
+        if result == -1 :
+            continue
+        
+        alphabets.append((contour, result))
     return alphabets
 
 

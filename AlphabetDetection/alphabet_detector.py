@@ -11,7 +11,7 @@ import matplotlib.gridspec as gridspec
 models = []
 
 for i in range(0, 5):
-    models.append(torch.load('AlphabetDetection\/model/result_{}.pt'.format(i), map_location=torch.device('cpu')))
+    models.append(torch.load('AlphabetDetection/model/result_{}.pt'.format(i), map_location=torch.device('cpu')))
     models[i].eval()
 
 def alphabet_detector(raw_data):
@@ -25,9 +25,10 @@ def alphabet_detector(raw_data):
         # print('model {} : {}'.format(i, selected))
         result += output.squeeze()
     
-    # if result.squeeze().detach().numpy()[selected] < -3 :
-    #     return -1
+    
     overall = result.argmax(dim=1, keepdim=True).numpy().squeeze()
+    if result.squeeze().detach().numpy()[overall] < answer_threshold :
+        return -1
     # print('Overall result : {}'.format(overall))
     return overall
     
