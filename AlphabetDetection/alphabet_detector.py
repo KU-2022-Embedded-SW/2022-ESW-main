@@ -27,10 +27,9 @@ def alphabet_detector(raw_data):
     
     
     overall = result.argmax(dim=1, keepdim=True).numpy().squeeze()
-    if result.squeeze().detach().numpy()[overall] < answer_threshold :
-        return -1
+    ans_weight = result.squeeze().detach().numpy()[overall]
     # print('Overall result : {}'.format(overall))
-    return overall
+    return overall, ans_weight
     
 
 

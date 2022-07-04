@@ -45,7 +45,7 @@ def main():
 
 def draw_contour(img, target):
     points = []
-    for contour, label in target:
+    for contour, label, weight in target:
         color1 = (list(np.random.choice(range(256), size=3)))  
         color =[int(color1[0]), int(color1[1]), int(color1[2])]  
         cv2.drawContours(img, [contour], -1, color, 1)
@@ -56,7 +56,8 @@ def draw_contour(img, target):
             x, y = 0, 0
         org=(x,y)
         font=cv2.FONT_HERSHEY_SIMPLEX
-        cv2.putText(img,string.ascii_uppercase[label],org,font,1,(255,255,255),3)
+        cv2.putText(img,'{}, {}'.format(string.ascii_uppercase[label], weight),org,font,0.5,(255,255,255),4)
+        cv2.putText(img,'{}, {}'.format(string.ascii_uppercase[label], weight),org,font,0.5,(0,0,0),2)
 
 
 def calc_points(contour):
@@ -100,12 +101,12 @@ def find_items(img, contours_im):
         crop_img = pil_img.crop((x,y,x+w,y+h))
 
         data = to_tensor(crop_img.resize((32,32)))
-        result = alphabet_detector(data)
+        result, weight = alphabet_detector(data)
 
-        if result == -1 :
+        if weight < answer_threshold :
             continue
         
-        alphabets.append((contour, result))
+        alphabets.append((contour, result, int(weight)))
     return alphabets
 
 
