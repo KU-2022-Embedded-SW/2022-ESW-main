@@ -14,6 +14,8 @@ https://github.com/UB-Mannheim/tesseract/wiki
 
 ![image](https://user-images.githubusercontent.com/91280867/177255423-dceca7e9-e503-433c-8b66-56d6eecbf794.png)
 
+편집 - 테서렉트 디렉토리 추가
+
 ![image](https://user-images.githubusercontent.com/91280867/177255472-de2929f0-d4c5-4920-8433-855248d570ff.png)
 
 
@@ -21,8 +23,11 @@ https://github.com/UB-Mannheim/tesseract/wiki
 
 
 패키지 설치
+
 pip install pillow
+
 pip install pytesseract
+
 pip install opencv-python
 
 
