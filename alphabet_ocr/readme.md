@@ -4,6 +4,6 @@ https://github.com/UB-Mannheim/tesseract/wiki
 
 https://ansan-survivor.tistory.com/313
 
-2. 환경변수에서 테서렉트를 추가한다.
+2. 시스템 - 환경변수 - path 에서 테서렉트를 추가한다.
 
 3. 에디터에도 테서렉트 라이브러리를 추가 설치한다.
