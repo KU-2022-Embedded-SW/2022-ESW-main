@@ -2,6 +2,9 @@ import pytesseract
 import cv2
 import numpy as np
 
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+
 cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 cam.set(3,640)
 cam.set(4,360)
@@ -21,10 +24,11 @@ def main():
             target = img_process(img)
         result = pytesseract.image_to_string(target, lang='eng')
         print(result)
-
+        cv2.imshow('test', img)
         k = cv2.waitKey(1) & 0xFF
         if k == 27:
             break
+    cv2.destroyAllWindows()
 
 
 
