@@ -6,3 +6,9 @@ AlphabetDetection/models/result_3.pt
 AlphabetDetection/models/result_4.pt
 *.pyc
 *.pt
+canny.jpg
+dilate.jpg
+erode.jpg
+gray.jpg
+original.jpg
+AlphabetDetection/example.py
