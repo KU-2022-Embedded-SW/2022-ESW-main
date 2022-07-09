@@ -99,16 +99,6 @@ def img_process(img):
     return img_erode
 
 
-# def find_items(contours_im, contours_target):
-#     matches = []
-#     for contour in contours_im:
-#         if cv2.contourArea(contour) < 500 :
-#             continue
-#         match = cv2.matchShapes(contours_target[0], contour, cv2.CONTOURS_MATCH_I2, 0.0)
-#         matches.append((match, contour))
-#     matches.sort(key=lambda x: x[0])
-#     return matches
-
 def find_items(contours_im):
     arrows = []
     for contour in contours_im:
@@ -127,7 +117,7 @@ def find_items(contours_im):
 def find_tip(points, convex_hull):
     length = len(points)
     indices = np.setdiff1d(range(length), convex_hull)
-
+    
     for i in range(2):
         j = indices[i] + 2
         if j > length - 1:
