@@ -13,6 +13,7 @@ models = []
 for i in range(0, 5):
     models.append(torch.load('AlphabetDetection/model/result_{}.pt'.format(i), map_location=torch.device('cpu')))
     models[i].eval()
+    print('model loaded!')
 
 def alphabet_detector(raw_data):
     data = raw_data.view(-1, 1, 32, 32)

@@ -5,3 +5,5 @@ TIDE = 32
 
 answer_threshold = -7
 tolerance = 20
+
+mode = 'debug'
