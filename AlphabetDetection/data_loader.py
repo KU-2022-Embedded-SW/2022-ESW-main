@@ -9,7 +9,7 @@ from consts import *
 
 current_directory = os.path.dirname(__file__)
 data_directory = os.path.join(current_directory, 'data')
-data_directory = "/content/drive/MyDrive/AlphabetDetection"
+# data_directory = "/content/drive/MyDrive/AlphabetDetection"
 
 dataset = AlphabetDataset()
 dataloader = DataLoader(dataset = dataset, batch_size = batch_size, shuffle=True, drop_last=False)
