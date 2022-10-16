@@ -12,4 +12,8 @@
 libcamera-jpeg -o test.jpg
 ```
 
+### raspberry pi serial comm test
+```
+python -m serial.tools.miniterm /dev/ttyACM0
+```
 
