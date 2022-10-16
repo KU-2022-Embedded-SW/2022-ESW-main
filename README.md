@@ -7,5 +7,9 @@
 3. Contour 근사화
 4. Contour 다각화
 
+### raspberry pi camera test
+```
+libcamera-jpeg -o test.jpg
+```
 
 
