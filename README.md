@@ -17,3 +17,7 @@ libcamera-jpeg -o test.jpg
 python -m serial.tools.miniterm /dev/ttyACM0
 ```
 
+### dependency
+```
+pip install opencv-python matplotlib torch pyserial
+```
