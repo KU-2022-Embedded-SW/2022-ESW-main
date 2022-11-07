@@ -2,8 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-import consts
-from consts import *
+from AlphabetDetection.consts import *
 
 def printshape(title, x):
   print(title, x.shape)

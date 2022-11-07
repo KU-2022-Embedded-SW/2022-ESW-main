@@ -25,8 +25,8 @@ class PathDetector():
     def find_path(self, contours):
         # 경로 정보를 반환
         # 반환값 : f(직진), c(코너), t(교차로), o(장애물)?
-        # 큰 직사각형 덩어리마다 긴쪽 중앙선 검출
+        # 큰 직사각형 덩어리마다 긴쪽 중앙선 검출 fitLine
         # 중앙선을 무한히 확장?
-        # 가장 가운데 중앙선 제외한 다른 
+        # 가운데 중앙선 양 옆에 
         ret_val = 0
         return ret_val
