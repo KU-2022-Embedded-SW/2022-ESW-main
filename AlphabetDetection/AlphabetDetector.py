@@ -40,14 +40,14 @@ class AlphabetDetector:
         cont_E, _ = cv2.findContours(self.img_process(alphabet_E), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
         cont_W, _ = cv2.findContours(self.img_process(alphabet_W), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
 
-        cv2.drawContours(alphabet_A, cont_A, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
-        cv2.drawContours(alphabet_B, cont_B, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
-        cv2.drawContours(alphabet_C, cont_C, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
-        cv2.drawContours(alphabet_D, cont_D, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
-        cv2.drawContours(alphabet_N, cont_N, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
-        cv2.drawContours(alphabet_S, cont_S, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
-        cv2.drawContours(alphabet_E, cont_E, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
-        cv2.drawContours(alphabet_W, cont_W, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        # cv2.drawContours(alphabet_A, cont_A, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        # cv2.drawContours(alphabet_B, cont_B, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        # cv2.drawContours(alphabet_C, cont_C, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        # cv2.drawContours(alphabet_D, cont_D, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        # cv2.drawContours(alphabet_N, cont_N, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        # cv2.drawContours(alphabet_S, cont_S, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        # cv2.drawContours(alphabet_E, cont_E, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        # cv2.drawContours(alphabet_W, cont_W, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
 
         # cv2.imshow('A', alphabet_A)
         # cv2.imshow('B', alphabet_B)
@@ -76,36 +76,29 @@ class AlphabetDetector:
 
     def get_alphabet_info(self, img):
         target_img = self.img_process(img)
-        contours_im, _ = cv2.findContours(target_img, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        alphabet, value, img = self.get_best_alphabet(cv2.cvtColor(target_img, cv2.COLOR_GRAY2BGR), target_img, contours_im)
-        retval2, match, contour = self.get_most_similar_alphabet(contours_im)
-        cv2.drawContours(img, contour, -1, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
-        return alphabet, value, retval2, match, img
+        target_contours, contour_img = self.get_contour(target_img)
+        alphabet, value = self.get_best_alphabet(target_img, target_contours)
+        alphabet2, value2 = self.get_most_similar_alphabet(target_contours)
+        # cv2.drawContours(img, contour, -1, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        return alphabet, value, alphabet2, value2, contour_img
 
     def get_most_similar_alphabet(self, contours):
         matches = []
         if len(contours) <= 0:
             return 0, 0
         for contour in contours:
-            x,y,w,h = cv2.boundingRect(contour)
-
-            if w < 30 or h < 30 :
-                continue
-            if h/w >= tolerance or w/h >= tolerance:
-                continue
-            
             for alphabet, target in self.target_contours:
-                match = cv2.matchShapes(contour, target[0], cv2.CONTOURS_MATCH_I3, 0.0)
-                matches.append((alphabet, match, contour))
+                match = cv2.matchShapes(contour[0], target[0], cv2.CONTOURS_MATCH_I3, 0.0)
+                matches.append((alphabet, match))
                 # print(alphabet, match)
             # print()
         matches.sort(key=lambda x : x[1])
         # 클 수록 다름?
         if len(matches) <= 0 :
-            return 0, 0, 0
-        elif len(matches[0]) < 3 :
-            return 0, 0, 0
-        return matches[0]
+            return 0, 0
+        elif len(matches[0]) < 2 :
+            return 0, 0
+        return matches[0][0], matches[0][1]
 
     # def img_process(self, img):
         # target = cv2.medianBlur(img, 5)
@@ -120,6 +113,21 @@ class AlphabetDetector:
         # img_dilate = cv2.dilate(img_canny, kernel, iterations=2)
         # img_erode = cv2.erode(img_dilate, kernel, iterations=2)
         # return img_erode
+    def get_contour(self, img):
+        contours_im, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        target_contours = []
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        for contour in contours_im:
+            x,y,w,h = cv2.boundingRect(contour)
+
+            if w < 30 or h < 30 :
+                continue
+            if h/w >= tolerance or w/h >= tolerance:
+                continue
+            target_contours.append((contour, x, y, w, h))
+            cv2.drawContours(img, contour, -1, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        print(len(target_contours))
+        return target_contours, img
 
     def img_process(self, img):
         threshold1 = 0
@@ -147,19 +155,14 @@ class AlphabetDetector:
         # print('Overall result : {}'.format(overall))
         return overall, ans_weight
 
-    def get_best_alphabet(self, img, target_img, contours_im):
+    def get_best_alphabet(self, target_img, target_contours):
         # alphabets = []
         max_weight = 0
         alphabet = ''
         cont = []
-        for contour in contours_im:
+        for contour in target_contours:
             
-            x,y,w,h = cv2.boundingRect(contour)
-
-            if w < 30 or h < 30 :
-                continue
-            if h/w >= tolerance or w/h >= tolerance:
-                continue
+            x,y,w,h = contour[1], contour[2], contour[3], contour[4]
 
             pil_img = Image.fromarray(target_img)
             cropped_img = pil_img.crop((x,y,x+w,y+h))
@@ -178,7 +181,7 @@ class AlphabetDetector:
             if max_weight < abs(weight):
                 max_weight = abs(weight)
                 alphabet = chr(result+ord('A'))
-                cont = contour
+                # cont = contour
             # alphabets.append((contour, result, int(weight)))
-        cv2.drawContours(img, cont, -1, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
-        return alphabet, max_weight, img
+        # cv2.drawContours(img, cont, -1, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
+        return alphabet, max_weight
