@@ -35,13 +35,13 @@ class AlphabetDetector:
         alphabet_W = cv2.imread('references/b_w.jpg', cv2.IMREAD_COLOR)
 
         cont_A, _ = cv2.findContours(self.img_process(alphabet_A), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-        cont_B, _ = cv2.findContours(self.img_process(alphabet_B), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        cont_C, _ = cv2.findContours(self.img_process(alphabet_C), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        cont_D, _ = cv2.findContours(self.img_process(alphabet_D), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        cont_N, _ = cv2.findContours(self.img_process(alphabet_N), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        cont_S, _ = cv2.findContours(self.img_process(alphabet_S), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        cont_E, _ = cv2.findContours(self.img_process(alphabet_E), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        cont_W, _ = cv2.findContours(self.img_process(alphabet_W), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+        cont_B, _ = cv2.findContours(self.img_process(alphabet_B), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        cont_C, _ = cv2.findContours(self.img_process(alphabet_C), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        cont_D, _ = cv2.findContours(self.img_process(alphabet_D), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        cont_N, _ = cv2.findContours(self.img_process(alphabet_N), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        cont_S, _ = cv2.findContours(self.img_process(alphabet_S), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        cont_E, _ = cv2.findContours(self.img_process(alphabet_E), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        cont_W, _ = cv2.findContours(self.img_process(alphabet_W), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
         # cv2.drawContours(alphabet_A, cont_A, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
         # cv2.drawContours(alphabet_B, cont_B, 0, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
@@ -110,13 +110,13 @@ class AlphabetDetector:
             return 0, 0
         elif len(matches[0]) < 2 :
             return 0, 0
-        elif matches[0][1] > 1:
+        elif matches[0][1] > 0.1:
             return 0, 0
         cv2.drawContours(output_img, matches[0][2], -1, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), 2)
         return matches[0][0], matches[0][1], output_img
 
     def get_contour(self, img, output_img):
-        contours_im, _ = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        contours_im, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         target_contours = []
         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         for contour in contours_im:

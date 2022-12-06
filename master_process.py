@@ -17,6 +17,8 @@ class Master:
         self.alphabet_history = []
         self.alphabet_history_size = 5
         self.alphabet_history_cnt = 0
+        self.find_abcd = False
+        self.find_nsew = False
 
         print('Initialize Arrow Detector')
         self.arrow_detector = ArrowDetector()
@@ -81,7 +83,14 @@ class Master:
                 self.alphabet_history[self.alphabet_history_cnt] = alphabet2
                 self.alphabet_history_cnt = (self.alphabet_history_cnt+1) % self.alphabet_history_size
             result = self.find_most_freq_alphabet()
+            if self.find_abcd is True:
+                if result == 'N':
+                    result = 'A'
+            elif self.find_nsew is True:
+                if result == 'A':
+                    result = 'N'
             print(f'alpha 2 : {result}')
+            print(f'value 2 : {value2}')
         else:
             print("nan")
         # print(f'alpha 1 : {alphabet}')
@@ -101,7 +110,7 @@ class Master:
         print("pi : wait for request")
         input = (self.ser.read()).decode("utf-8")
         print (f'input : {input}')
-        if input != 'p' and input != 'a' and input !='l':
+        if input != 'p' and input != 'a' and input !='l' and input !='x' and input !='y':
             input = self.last_command
 
         if input == "p" :
@@ -116,6 +125,12 @@ class Master:
             # alphabet
             self.find_alphabet()
             self.last_command = 'l'
+        elif input == "x" :
+            self.find_abcd = True
+            self.find_nsew = False
+        elif input == "y" :
+            self.find_abcd = False
+            self.find_nsew = True
         
     def destroy(self):
         self.ser.close()
